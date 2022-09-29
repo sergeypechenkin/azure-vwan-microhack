@@ -23,5 +23,42 @@
       update = "4h"
       read = "10m"
       delete = "4h"
+      
     }
   }
+
+
+
+#######################################################################
+## Create a VPN Site - to change varuables
+#######################################################################
+
+
+  resource "azurerm_vpn_site" "region1-officesite1" {
+  name                = "${var.region1}-officesite-01"
+  location            = azurerm_resource_group.region1-rg1.location
+  resource_group_name = azurerm_resource_group.region1-rg1.name
+  virtual_wan_id      = azurerm_virtual_wan.vwan1.id
+  address_cidrs = ["10.100.0.0/24"]
+  link {
+    name       = "Office-Link-1"
+    ip_address = "10.1.0.0"
+    speed_in_mbps = "20"
+  }
+}
+
+#######################################################################
+## Create a VPN Site connection - to change varuables
+#######################################################################
+
+resource "azurerm_vpn_gateway_connection" "region1-officesite1" {
+  name               = "${var.region1}-officesite1-conn"
+  vpn_gateway_id     = azurerm_vpn_gateway.region1-gateway1.id
+  remote_vpn_site_id = azurerm_vpn_site.region1-officesite1.id
+
+  vpn_link {
+    name             = "link1"
+    vpn_site_link_id = azurerm_vpn_site.region1-officesite1.link[0].id
+  }
+}
+

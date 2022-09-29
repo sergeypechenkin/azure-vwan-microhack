@@ -69,3 +69,9 @@ variable "vmsize" {
   description = "Size of the VMs"
   default     = "Standard_D2s_v3"
 }
+
+variable "we-hub_gateway_shared_key" {
+  description = "SKey for S2S VPNs to Hub"
+  default     = "Kjd9uHyvsm)"
+}
+
